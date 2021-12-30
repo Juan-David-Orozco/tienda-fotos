@@ -1,5 +1,12 @@
 <div class="row">
   <div class="col-md-12">
+
+    <% flash.get('mensaje').forEach(function (msg) { %>
+      <div class="alert alert-info text-center" role="alert">
+        <%=msg%>
+      </div>
+    <% }) %>
+
     <div class="jumbotron text-white">
       <h1>
         Bienvenido!

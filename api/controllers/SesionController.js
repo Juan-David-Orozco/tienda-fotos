@@ -25,10 +25,29 @@ module.exports = {
         contrasena: peticion.body.contrasena
       })
       peticion.session.cliente = cliente;
+      peticion.addFlash('mensaje', 'Cliente registrado')
       return respuesta.redirect("/");
     }
 
   },
+
+  inicioSesion: async (peticion, respuesta) => {
+    respuesta.view('pages/inicio_sesion')
+  },
+
+  procesarInicioSesion: async (peticion, respuesta) => {
+    const email = peticion.body.email
+    const contrasena = peticion.body.contrasena
+    let cliente = await Cliente.findOne({ email: email, contrasena: contrasena});
+    if (cliente) {
+      peticion.addFlash('mensaje', 'Sesión iniciada')
+      return respuesta.redirect("/");
+    }
+    else {
+      peticion.addFlash('mensaje', 'Email o contraseña invalido')
+      return respuesta.redirect("/inicio-sesion");
+    }
+  }
 
 };
 

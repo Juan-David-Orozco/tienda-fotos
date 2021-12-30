@@ -24,6 +24,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  'GET /': 'PrincipalController.inicio',
+
   '/': {
     view: 'pages/inicio'
   },
@@ -34,6 +36,9 @@ module.exports.routes = {
 
   'GET /registro': 'SesionController.registro',
   'POST /procesar-registro': 'SesionController.procesarRegistro',
+
+  'GET /inicio-sesion': 'SesionController.inicioSesion',
+  'POST /procesar-inicio-sesion': 'SesionController.procesarInicioSesion',
 
   /***************************************************************************
   *                                                                          *
