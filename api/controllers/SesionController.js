@@ -14,6 +14,7 @@ module.exports = {
   procesarRegistro: async (peticion, respuesta) => {
 
     let cliente = await Cliente.findOne({ email: peticion.body.email });
+    sails.log.debug(cliente)
     if (cliente) {
       peticion.addFlash('mensaje', 'Email duplicado')
       return respuesta.redirect("/registro");
@@ -25,6 +26,7 @@ module.exports = {
         contrasena: peticion.body.contrasena
       })
       peticion.session.cliente = cliente;
+      sails.log.debug(peticion.session.cliente)
       peticion.addFlash('mensaje', 'Cliente registrado')
       return respuesta.redirect("/");
     }
@@ -41,6 +43,7 @@ module.exports = {
     let cliente = await Cliente.findOne({ email: email, contrasena: contrasena});
     if (cliente) {
       peticion.session.cliente = cliente; // Se guarda el cliente en el objeto session (express)
+      sails.log.debug(cliente)
       let carroCompra = await CarroCompra.find({cliente: cliente.id})
       peticion.session.carroCompra = carroCompra
       peticion.addFlash('mensaje', 'Sesión iniciada')
