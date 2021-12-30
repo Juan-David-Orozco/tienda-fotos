@@ -20,8 +20,18 @@
     %>
       <li class="nav-item">
         <span class="px-2 text-white"><%=session.cliente.nombre%></span>
-          <a class="btn btn-light mx-2" href="/cerrar-sesion">Cerrar Sesión</a>
       </li>
+      <li class="nav-item">
+        <a class="btn btn-light mx-2" href="/carro-de-compra"><i class="fas fa-cart-plus"></i>
+          <span class="badge"><%=(session.carroCompra) ? session.carroCompra.length : 0%></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-light mx-2" href="/cerrar-sesion">Cerrar Sesión</a>
+      </li>
+
+          
+
     <% } %>
   </ul>
 </nav>

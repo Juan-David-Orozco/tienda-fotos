@@ -41,6 +41,8 @@ module.exports = {
     let cliente = await Cliente.findOne({ email: email, contrasena: contrasena});
     if (cliente) {
       peticion.session.cliente = cliente; // Se guarda el cliente en el objeto session (express)
+      let carroCompra = await CarroCompra.find({cliente: cliente.id})
+      peticion.session.carroCompra = carroCompra
       peticion.addFlash('mensaje', 'Sesión iniciada')
       return respuesta.redirect("/");
     }
