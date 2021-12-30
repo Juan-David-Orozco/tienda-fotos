@@ -8,11 +8,20 @@
     </li>
   </ul>
   <ul class="navbar-nav mr-2">
-    <li class="nav-item">
-      <a class="btn btn-light" href="/registro">Registro</a>
-    </li>
-    <li class="nav-item">
-      <a class="btn btn-light mx-2" href="/inicio-sesion">Inicio de Sesión</a>
-    </li>
+    <% if (!session || !session.cliente) { %>
+      <li class="nav-item">
+        <a class="btn btn-light" href="/registro">Registro</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-light mx-2" href="/inicio-sesion">Inicio de Sesión</a>
+      </li>
+    <% }
+    else {
+    %>
+      <li class="nav-item">
+        <span class="px-2 text-white"><%=session.cliente.nombre%></span>
+          <a class="btn btn-light mx-2" href="/cerrar-sesion">Cerrar Sesión</a>
+      </li>
+    <% } %>
   </ul>
 </nav>

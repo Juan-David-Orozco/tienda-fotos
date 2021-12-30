@@ -40,6 +40,7 @@ module.exports = {
     const contrasena = peticion.body.contrasena
     let cliente = await Cliente.findOne({ email: email, contrasena: contrasena});
     if (cliente) {
+      peticion.session.cliente = cliente; // Se guarda el cliente en el objeto session (express)
       peticion.addFlash('mensaje', 'Sesión iniciada')
       return respuesta.redirect("/");
     }
@@ -47,7 +48,13 @@ module.exports = {
       peticion.addFlash('mensaje', 'Email o contraseña invalido')
       return respuesta.redirect("/inicio-sesion");
     }
-  }
+  },
+
+  cerrarSesion: async (peticion, respuesta) => {
+    peticion.session.cliente = undefined;
+    peticion.addFlash('mensaje', 'Sesión finalizada')
+    return respuesta.redirect("/");
+  },
 
 };
 
