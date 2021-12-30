@@ -75,5 +75,23 @@ module.exports = {
     respuesta.view('pages/mis_ordenes', {ordenes})
   },
 
+  ordenDeCompra: async (peticion, respuesta) => {
+    if (!peticion.session || !peticion.session.cliente) {
+      return respuesta.redirect("/")
+    }
+    let orden = await Orden.findOne({ cliente: peticion.session.cliente.id, id: peticion.params.ordenId }).populate('detalles')
+
+    if (!orden) {
+      return respuesta.redirect("/mis-ordenes")
+    }
+
+    if (orden && orden.detalles == 0) {
+      return respuesta.view('pages/orden', { orden })
+    }
+
+    orden.detalles = await OrdenDetalle.find({ orden: orden.id }).populate('foto')
+    return respuesta.view('pages/orden', { orden })
+  },
+
 };
 
