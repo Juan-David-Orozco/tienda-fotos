@@ -67,5 +67,13 @@ module.exports = {
     return respuesta.redirect("/")
   },
 
+  misOrdenes: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.cliente){
+      return respuesta.redirect("/")
+    }
+    let ordenes = await Orden.find({cliente: peticion.session.cliente.id}).sort('id desc')
+    respuesta.view('pages/mis_ordenes', {ordenes})
+  },
+
 };
 

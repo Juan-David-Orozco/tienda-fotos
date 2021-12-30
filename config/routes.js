@@ -42,6 +42,8 @@ module.exports.routes = {
   'GET /eliminar-carro-compra/:fotoId': 'CompraController.eliminarCarroCompra',
 
   'GET /comprar': 'CompraController.comprar',
+  'GET /mis-ordenes': 'CompraController.misOrdenes',
+
 
   /***************************************************************************
   *                                                                          *
