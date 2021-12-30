@@ -37,6 +37,8 @@ module.exports.routes = {
   'GET /cerrar-sesion': 'SesionController.cerrarSesion',
   'POST /procesar-inicio-sesion': 'SesionController.procesarInicioSesion',
 
+  'GET /agregar-carro-compra/:fotoId': 'CompraController.agregarCarroCompra',
+
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
