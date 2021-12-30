@@ -32,6 +32,9 @@ module.exports.routes = {
     view: 'pages/acerca_de'
   },
 
+  'GET /registro': 'SesionController.registro',
+  'POST /procesar-registro': 'SesionController.procesarRegistro',
+
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
