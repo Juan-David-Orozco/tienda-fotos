@@ -18,116 +18,22 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-3 my-2">
-    <div class="card">
-      <h5 class="card-header bg-info text-white">
-        Verde
-      </h5>
-      <div class="card-body">
-        <p class="card-text">
-          <img src="images/img1.jpg" alt="" class="w-100">
-        </p>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 my-2">
-    <div class="card">
-      <h5 class="card-header bg-info text-white">
-        Olas
-      </h5>
-      <div class="card-body">
-        <p class="card-text">
-          <img src="images/img2.jpg" alt="" class="w-100">
-        </p>
-      </div>
-      <div class="card-footer">
+
+  <% fotos.forEach( foto => { %>
+    <div class="col-md-3 my-2">
+      <div class="card">
+        <h5 class="card-header bg-info text-white">
+          <%=foto.titulo%>
+        </h5>
+        <div class="card-body">
+          <p class="card-text">
+            <img src="images/fotos/<%=foto.contenido%>" alt="" class="w-100">
+          </p>
+        </div>
+        <div class="card-footer">
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-3 my-2">
-    <div class="card">
-      <h5 class="card-header bg-info text-white">
-        Árboles
-      </h5>
-      <div class="card-body">
-        <p class="card-text">
-          <img src="images/img3.jpg" alt="" class="w-100">
-        </p>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 my-2">
-    <div class="card">
-      <h5 class="card-header bg-info text-white">
-        ByN
-      </h5>
-      <div class="card-body">
-        <p class="card-text">
-          <img src="images/img4.jpg" alt="" class="w-100">
-        </p>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 my-2">
-    <div class="card">
-      <h5 class="card-header bg-info text-white">
-        Verde
-      </h5>
-      <div class="card-body">
-        <p class="card-text">
-          <img src="images/img1.jpg" alt="" class="w-100">
-        </p>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 my-2">
-    <div class="card">
-      <h5 class="card-header bg-info text-white">
-        Olas
-      </h5>
-      <div class="card-body">
-        <p class="card-text">
-          <img src="images/img2.jpg" alt="" class="w-100">
-        </p>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 my-2">
-    <div class="card">
-      <h5 class="card-header bg-info text-white">
-        Árboles
-      </h5>
-      <div class="card-body">
-        <p class="card-text">
-          <img src="images/img3.jpg" alt="" class="w-100">
-        </p>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 my-2">
-    <div class="card">
-      <h5 class="card-header bg-info text-white">
-        ByN
-      </h5>
-      <div class="card-body">
-        <p class="card-text">
-          <img src="images/img4.jpg" alt="" class="w-100">
-        </p>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
-  </div>
+  <% }) %>
+
 </div>

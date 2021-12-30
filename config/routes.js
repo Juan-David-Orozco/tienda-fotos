@@ -26,10 +26,6 @@ module.exports.routes = {
 
   'GET /': 'PrincipalController.inicio',
 
-  '/': {
-    view: 'pages/inicio'
-  },
-
   '/acerca-de': {
     view: 'pages/acerca_de'
   },

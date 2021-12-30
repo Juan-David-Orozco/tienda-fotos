@@ -8,7 +8,8 @@
 module.exports = {
   
   inicio: async (peticion, respuesta) => {
-    respuesta.view('pages/inicio')
+    let fotos = await Foto.find({activa: true})
+    respuesta.view('pages/inicio', {fotos})
   },
 
 
