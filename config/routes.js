@@ -47,6 +47,9 @@ module.exports.routes = {
 
   'GET /top-vendidas': 'PrincipalController.topVendidas',
 
+  'GET /agregar-lista-deseo/:fotoId': 'CompraController.agregarListaDeseo',
+  'GET /lista-deseo': 'CompraController.listaDeseo',
+  'GET /eliminar-lista-deseo/:fotoId': 'CompraController.eliminarListaDeseo',
 
   /***************************************************************************
   *                                                                          *
