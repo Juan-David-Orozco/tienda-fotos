@@ -45,6 +45,8 @@ module.exports.routes = {
   'GET /mis-ordenes': 'CompraController.misOrdenes',
   'GET /mis-ordenes/:ordenId': 'CompraController.ordenDeCompra',
 
+  'GET /top-vendidas': 'PrincipalController.topVendidas',
+
 
   /***************************************************************************
   *                                                                          *

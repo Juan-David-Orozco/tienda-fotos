@@ -6,6 +6,9 @@
     <li class="nav-item">
       <a class="nav-link" href="/acerca-de">Acerca de</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/top-vendidas">Top Vendidas</a>
+    </li>
   </ul>
   <ul class="navbar-nav mr-2">
     <% if (!session || !session.cliente) { %>
@@ -19,7 +22,7 @@
     else {
     %>
       <li class="nav-item">
-        <span class="my-2 px-2 text-white"><%=session.cliente.nombre%></span>
+        <b class="px-2"><span class="m-2 text-white"><%=session.cliente.nombre%></span></b>
       </li>
       </li>
       <li class="nav-item">
