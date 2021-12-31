@@ -5,6 +5,9 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+const path = require('path');
+const fs = require('fs');
+
 module.exports = {
 
   inicioSesion: async (peticion, respuesta) => {
@@ -47,18 +50,40 @@ module.exports = {
   },
 
   procesarAgregarFoto: async (peticion, respuesta) => {
-    
+    let foto = await Foto.create({
+      titulo: peticion.body.titulo,
+      activa: false
+    }).fetch()
+    peticion.file('foto').upload({}, async (error,archivos) => {
 
+      if (archivos && archivos[0]) {
+        let upload_path = archivos[0].fd
+        let extension = path.extname(upload_path)
 
+        await fs.createReadStream(upload_path).pipe(fs.createWriteStream(path.resolve(sails.config.appPath, `assets/images/fotos/${foto.id}${extension}`)))
+        await Foto.update(
+          {id: foto.id},
+          {contenido: `${foto.id}${extension}`, activa: true}
+        )
+        peticion.addFlash('mensaje', 'Foto agregada')
+        return respuesta.redirect("/admin/principal")
+      }
+      peticion.addFlash('mensaje', 'No hay foto seleccionada')
+      return respuesta.redirect("/admin/agregar-foto")
 
-
-
+    })
   },
 
+  desactivarFoto: async (peticion, respuesta) => {
+    await Foto.update({id: peticion.params.fotoId}, {activa: false})
+    peticion.addFlash('mensaje', 'Foto desactivada')
+    return respuesta.redirect("/admin/principal")
+  },
 
+  activarFoto: async (peticion, respuesta) => {
+    await Foto.update({id: peticion.params.fotoId}, {activa: true})
+    peticion.addFlash('mensaje', 'Foto activada')
+    return respuesta.redirect("/admin/principal")
+  },
 
-
-
-
-
- };
+};
