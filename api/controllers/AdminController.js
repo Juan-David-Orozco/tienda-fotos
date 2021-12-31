@@ -32,13 +32,27 @@ module.exports = {
       peticion.addFlash('mensaje', 'Sesión inválida')
       return respuesta.redirect("/admin/inicio-sesion")
     }
-    respuesta.view('pages/admin/principal')
+    let fotos = await Foto.find()
+    respuesta.view('pages/admin/principal', {fotos})
   },
 
   cerrarSesion: async (peticion, respuesta) => {
     peticion.session.admin = undefined;
     peticion.addFlash('mensaje', 'Sesión admin finalizada')
     return respuesta.redirect("/");
+  },
+
+  agregarFoto: async (peticion, respuesta) => {
+    respuesta.view('pages/admin/agregar_foto')
+  },
+
+  procesarAgregarFoto: async (peticion, respuesta) => {
+    
+
+
+
+
+
   },
 
 

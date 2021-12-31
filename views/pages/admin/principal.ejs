@@ -1,6 +1,5 @@
 <div class="row">
-  <div class="col-md-3"></div>
-  <div class="col-md-6">
+  <div class="col-md-10">
 
     <% flash.get('mensaje').forEach(function (msg) { %>
       <div class="alert alert-info" role="alert">
@@ -10,6 +9,39 @@
 
     <h2>Admin - Principal</h2>
 
+    <div class="row">
+      <div class="col-md-12">
+    
+        <% flash.get('mensaje').forEach(function (msg) { %>
+          <div class="alert alert-info text-center" role="alert">
+            <%=msg%>
+          </div>
+        <% }) %>
+    
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Titulo</th>
+              <th scope="col">Foto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% fotos.forEach( foto => { %>
+            <tr>
+              <td scope="row"><%=foto.id%></td>
+              <td scope="row"><%=foto.titulo%></td>
+              <td>
+                <img src="../images/fotos/<%=foto.contenido%>" alt="" class="img-fluid">
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
+        <a href="/admin/agregar-foto" class="btn btn-primary">Agregar Foto</a>
+
+      </div>
+    </div>
   </div>
-  <div class="col-md-3"></div>
 </div>

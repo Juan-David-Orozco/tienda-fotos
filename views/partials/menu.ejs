@@ -35,6 +35,10 @@
 
     <% } else if (session && session.admin) { %>
       <li class="nav-item">
+        <b class="px-2 text-white"><i>ADMIN:</i></b>
+        <b><span class="px-2 text-white"><%=session.admin.nombre%></span></b>
+      </li>
+      <li class="nav-item">
         <a class="btn btn-dark mx-2" href="/admin/cerrar-sesion">Cerrar Sesión</a>
       </li>
 
