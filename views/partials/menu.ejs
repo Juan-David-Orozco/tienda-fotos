@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand navbar-dark bg-primary">
+
   <ul class="navbar-nav mr-auto">
     <li class="nav-item active">
       <a class="nav-link" href="/">Inicio</a>
@@ -10,26 +11,18 @@
       <a class="nav-link" href="/top-vendidas">Top Vendidas</a>
     </li>
   </ul>
+
   <ul class="navbar-nav mr-2">
-    <% if (!session || !session.cliente) { %>
+
+    <% if (session && session.cliente) { %>
       <li class="nav-item">
-        <a class="btn btn-light" href="/registro">Registro</a>
-      </li>
-      <li class="nav-item">
-        <a class="btn btn-light mx-2" href="/inicio-sesion">Inicio de Sesión</a>
-      </li>
-    <% }
-    else {
-    %>
-      <li class="nav-item">
-        <b class="px-2"><span class="m-2 text-white"><%=session.cliente.nombre%></span></b>
-      </li>
-      </li>
-      <li class="nav-item">
-        <a class="btn btn-light mx-2" href="/lista-deseo"><i class="fas fa-list-ul"></i></a>
+        <b><span class="px-2 text-white"><%=session.cliente.nombre%></span></b>
       </li>
       <li class="nav-item">
         <a class="btn btn-light mx-2" href="/mis-ordenes">Mis órdenes</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-light mx-2" href="/lista-deseo"><i class="fas fa-list-ul"></i></a>
       </li>
       <li class="nav-item">
         <a class="btn btn-light mx-2" href="/carro-de-compra"><i class="fas fa-cart-plus"></i>
@@ -40,8 +33,19 @@
         <a class="btn btn-light mx-2" href="/cerrar-sesion">Cerrar Sesión</a>
       </li>
 
-          
+    <% } else if (session && session.admin) { %>
+      <li class="nav-item">
+        <a class="btn btn-dark mx-2" href="/admin/cerrar-sesion">Cerrar Sesión</a>
+      </li>
 
+    <% } else { %>
+      <li class="nav-item">
+        <a class="btn btn-light" href="/registro">Registro</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-light mx-2" href="/inicio-sesion">Inicio de Sesión</a>
+      </li>
     <% } %>
+    
   </ul>
 </nav>

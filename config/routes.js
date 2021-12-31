@@ -51,6 +51,13 @@ module.exports.routes = {
   'GET /lista-deseo': 'CompraController.listaDeseo',
   'GET /eliminar-lista-deseo/:fotoId': 'CompraController.eliminarListaDeseo',
 
+  'GET /admin/inicio-sesion': 'AdminController.inicioSesion',
+  'POST /admin/procesar-inicio-sesion': 'AdminController.procesarInicioSesion',
+  'GET /admin/principal': 'AdminController.principal',
+  'GET /admin/cerrar-sesion': 'AdminController.cerrarSesion',
+  
+
+
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
