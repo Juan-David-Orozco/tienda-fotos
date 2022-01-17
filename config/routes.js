@@ -62,6 +62,7 @@ module.exports.routes = {
   'GET /admin/activar-foto/:fotoId': 'AdminController.activarFoto',
 
   'GET /admin/clientes': 'AdminController.clientes',
+  'GET /admin/clientes/:clienteId': 'AdminController.ordenesClientes',
   'GET /admin/administradores': 'AdminController.administradores',
   'GET /admin/dashboard': 'AdminController.dashboard',
 

@@ -39,6 +39,27 @@ module.exports = {
     respuesta.view('pages/admin/principal', {fotos})
   },
 
+  clientes: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let clientes = await Cliente.find()
+    respuesta.view('pages/admin/clientes', {clientes})
+  },
+
+  ordenesClientes: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let ordenes = await Orden.find({cliente: peticion.params.clienteId })
+    sails.log.debug(ordenes)
+    return respuesta.view('pages/admin/ordenes_clientes', { ordenes })
+    //if (!ordenCliente) {
+    //  return respuesta.redirect("/admin/clientes")
+    //}
+  },
+
   cerrarSesion: async (peticion, respuesta) => {
     peticion.session.admin = undefined;
     peticion.addFlash('mensaje', 'Sesión admin finalizada')
