@@ -45,6 +45,7 @@ module.exports = {
       return respuesta.redirect("/admin/inicio-sesion")
     }
     let clientes = await Cliente.find()
+    //sails.log.debug(clientes)
     respuesta.view('pages/admin/clientes', {clientes})
   },
 
@@ -114,6 +115,18 @@ module.exports = {
     await Foto.update({id: peticion.params.fotoId}, {activa: true})
     peticion.addFlash('mensaje', 'Foto activada')
     return respuesta.redirect("/admin/principal")
+  },
+
+  desactivarCliente: async (peticion, respuesta) => {
+    await Cliente.update({id: peticion.params.clienteId}, {activo: false})
+    peticion.addFlash('mensaje', 'Cliente desactivado')
+    return respuesta.redirect("/admin/clientes")
+  },
+
+  activarCliente: async (peticion, respuesta) => {
+    await Cliente.update({id: peticion.params.clienteId}, {activo: true})
+    peticion.addFlash('mensaje', 'Cliente Activado')
+    return respuesta.redirect("/admin/clientes")
   },
 
 };

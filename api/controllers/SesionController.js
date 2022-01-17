@@ -41,13 +41,20 @@ module.exports = {
     const email = peticion.body.email
     const contrasena = peticion.body.contrasena
     let cliente = await Cliente.findOne({ email: email, contrasena: contrasena});
+    sails.log.debug(cliente)
     if (cliente) {
-      peticion.session.cliente = cliente; // Se guarda el cliente en el objeto session (express)
-      sails.log.debug(cliente)
-      let carroCompra = await CarroCompra.find({cliente: cliente.id})
-      peticion.session.carroCompra = carroCompra
-      peticion.addFlash('mensaje', 'Sesión iniciada')
-      return respuesta.redirect("/");
+      if(cliente.activo) {
+        peticion.session.cliente = cliente; // Se guarda el cliente en el objeto session (express)
+        sails.log.debug(cliente)
+        let carroCompra = await CarroCompra.find({cliente: cliente.id})
+        peticion.session.carroCompra = carroCompra
+        peticion.addFlash('mensaje', 'Sesión iniciada')
+        return respuesta.redirect("/");
+      }
+      else {
+        peticion.addFlash('mensaje', 'Cliente desactivado')
+        return respuesta.redirect("/inicio-sesion");
+      }
     }
     else {
       peticion.addFlash('mensaje', 'Email o contraseña invalido')

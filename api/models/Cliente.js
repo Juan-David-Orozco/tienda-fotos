@@ -17,7 +17,9 @@ module.exports = {
 
     email: { type: 'string' },
 
-    contrasena: { type: 'string' }
+    contrasena: { type: 'string' },
+
+    activo: { type: 'boolean' }
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
