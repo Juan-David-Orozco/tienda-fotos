@@ -20,7 +20,7 @@
       <tbody>
         <% ordenes.forEach( orden => { %>
           <tr>
-            <td scope="row"><%=orden.id%></td>
+            <td scope="row"><a href="/admin/fotos-ordenes/<%=orden.id%>"><%=orden.id%></a></td>
             <td scope="row"><%=orden.fecha%></td>
             <td scope="row"><%=orden.total%></td>
           </tr>

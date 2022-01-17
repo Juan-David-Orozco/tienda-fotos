@@ -32,7 +32,7 @@
     orden: {
       model: 'orden',
       columnName: 'orden_id'
-    }
+    },
 
   },
 

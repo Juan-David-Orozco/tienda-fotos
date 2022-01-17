@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-md-10 mx-auto">
+
+    <% flash.get('mensaje').forEach(function (msg) { %>
+      <div class="alert alert-info text-center" role="alert">
+        <%=msg%>
+      </div>
+    <% }) %>
+
+    <h2>Admin - Fotos Ordenes</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Titulo</th>
+          <th>Foto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% elementos.forEach( elemento => { %>
+        <tr>
+          <td><%=elemento.foto.id%></td>
+          <td><%=elemento.foto.titulo%></td>
+          <td>
+            <img src="../images/fotos/<%=elemento.foto.contenido%>" alt="" class="wf-10" >
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+  </div>
+</div>

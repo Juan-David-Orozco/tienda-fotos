@@ -60,6 +60,15 @@ module.exports = {
     //}
   },
 
+  fotosOrdenes: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let elementos = await OrdenDetalle.find({orden: peticion.params.ordenId}).populate('foto')
+    sails.log.debug(elementos)
+    return respuesta.view('pages/admin/fotos_ordenes', { elementos })
+  },
+
   cerrarSesion: async (peticion, respuesta) => {
     peticion.session.admin = undefined;
     peticion.addFlash('mensaje', 'Sesión admin finalizada')
