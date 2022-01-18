@@ -54,7 +54,7 @@ module.exports = {
       return respuesta.redirect("/admin/inicio-sesion")
     }
     let ordenes = await Orden.find({cliente: peticion.params.clienteId })
-    sails.log.debug(ordenes)
+    //sails.log.debug(ordenes)
     return respuesta.view('pages/admin/ordenes_clientes', { ordenes })
     //if (!ordenCliente) {
     //  return respuesta.redirect("/admin/clientes")
@@ -128,5 +128,54 @@ module.exports = {
     peticion.addFlash('mensaje', 'Cliente Activado')
     return respuesta.redirect("/admin/clientes")
   },
+
+  administradores: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let administradores = await Admin.find()
+    //sails.log.debug(administradores)
+    respuesta.view('pages/admin/administradores', {administradores})
+
+  },
+
+  desactivarAdmin: async (peticion, respuesta) => {
+    if(peticion.session || peticion.session.admin){
+      const admin_id = peticion.session.admin.id
+      //sails.log.debug(admin_id)
+      //sails.log.debug(peticion.params.adminId)
+      if(admin_id == peticion.params.adminId){
+        peticion.addFlash('mensaje', 'Un administrador no se puede desactivar a si mismo')
+        return respuesta.redirect("/admin/administradores")
+      }
+      else{
+        await Admin.update({id: peticion.params.adminId}, {activo: false})
+        peticion.addFlash('mensaje', 'Administrador desactivado')
+        return respuesta.redirect("/admin/administradores")
+      }
+    }
+    else {
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+  },
+
+
+  activarAdmin: async (peticion, respuesta) => {
+    if(peticion.session || peticion.session.admin){
+      const admin_id = peticion.session.admin.id
+      //sails.log.debug(admin_id)
+      //sails.log.debug(peticion.params.adminId)
+      await Admin.update({id: peticion.params.adminId}, {activo: true})
+      peticion.addFlash('mensaje', 'Administrador Activado')
+      return respuesta.redirect("/admin/administradores")
+    }
+    else {
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+  },
+
 
 };

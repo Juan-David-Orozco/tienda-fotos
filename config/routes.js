@@ -68,6 +68,10 @@ module.exports.routes = {
   'GET /admin/activar-cliente/:clienteId': 'AdminController.activarCliente',
 
   'GET /admin/administradores': 'AdminController.administradores',
+  'GET /admin/desactivar-admin/:adminId': 'AdminController.desactivarAdmin',
+  'GET /admin/activar-admin/:adminId': 'AdminController.activarAdmin',
+
+
   'GET /admin/dashboard': 'AdminController.dashboard',
 
   
