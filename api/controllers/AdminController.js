@@ -135,7 +135,6 @@ module.exports = {
       return respuesta.redirect("/admin/inicio-sesion")
     }
     let administradores = await Admin.find()
-    //sails.log.debug(administradores)
     respuesta.view('pages/admin/administradores', {administradores})
 
   },
@@ -174,6 +173,34 @@ module.exports = {
     else {
       peticion.addFlash('mensaje', 'Sesión inválida')
       return respuesta.redirect("/admin/inicio-sesion")
+    }
+  },
+
+
+  dashboard: async (peticion, respuesta) => {
+    /*
+    let fotos = await Foto.find()
+    sails.log.debug(fotos)
+    let foto = await Foto.findOne({id:1})
+    sails.log.debug(foto)
+    */
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    else {
+      let totalClientes = await Cliente.count()
+      let totalAdministradores = await Admin.count()
+      let totalFotos = await Foto.count()
+      let totalOrdenes = await Orden.count()
+      let total = {
+        Clientes: totalClientes,
+        Administradores: totalAdministradores,
+        Fotos: totalFotos,
+        Ordenes: totalOrdenes
+      }
+      sails.log.debug(total)
+      respuesta.view('pages/admin/dashboard', {total})
     }
   },
 
