@@ -21,15 +21,17 @@
           <tr>
             <td scope="row"><%=elemento.foto.titulo%></td>
             <td>
-              <img src="images/fotos/<%=elemento.foto.contenido%>" alt="" class="img-fluid">
-              <a class="btn btn-light mx2" href="/eliminar-carro-compra/<%=elemento.foto.id%>">Eliminar</a>
+              <img src="/images/fotos/<%=elemento.foto.contenido%>" alt="" class="wf-10">
+              <a class="btn btn-light mx-2" href="/eliminar-carro-compra/<%=elemento.foto.id%>">Eliminar</a>
             </td>
           </tr>
         <% }) %>
       </tbody>
     </table>
+    
     <p>
       <a href="/comprar" class="btn btn-primary">Comprar</a>
     </p>
+
   </div>
 </div>

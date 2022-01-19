@@ -15,7 +15,7 @@
   <ul class="navbar-nav mr-2">
 
     <% if (session && session.cliente) { %>
-      <li class="nav-item">
+      <li class="nav-item my-auto">
         <b><span class="px-2 text-white"><%=session.cliente.nombre%></span></b>
       </li>
       <li class="nav-item">
@@ -34,9 +34,9 @@
       </li>
 
     <% } else if (session && session.admin) { %>
-      <li class="nav-item">
+      <li class="nav-item my-auto">
         <b class="px-2 text-white"><i>ADMIN:</i></b>
-        <b><span class="px-2 text-white"><%=session.admin.nombre%></span></b>
+        <b><span class="text-white"><%=session.admin.nombre%></span></b>
       </li>
       <li class="nav-item">
         <a class="btn btn-light mx-2" href="/admin/principal">Principal</a>
@@ -62,6 +62,6 @@
         <a class="btn btn-light mx-2" href="/inicio-sesion">Inicio de Sesión</a>
       </li>
     <% } %>
-    
+
   </ul>
 </nav>

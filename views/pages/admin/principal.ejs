@@ -2,21 +2,15 @@
   <div class="col-md-10 mx-auto">
 
     <% flash.get('mensaje').forEach(function (msg) { %>
-      <div class="alert alert-info" role="alert">
+      <div class="alert alert-success text-center" role="alert">
         <%=msg%>
       </div>
     <% }) %>
 
     <h2>Admin - Principal</h2>
 
-    <% flash.get('mensaje').forEach(function (msg) { %>
-      <div class="alert alert-info text-center" role="alert">
-        <%=msg%>
-      </div>
-    <% }) %>
-
     <table class="table">
-      <thead>
+      <thead class="text-center">
         <tr>
           <th>Id</th>
           <th>Titulo</th>
@@ -25,15 +19,15 @@
           <th>Acción</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-center">
         <% fotos.forEach( foto => { %>
-        <tr>
-          <td><%=foto.id%></td>
-          <td><%=foto.titulo%></td>
-          <td>
-            <img src="../images/fotos/<%=foto.contenido%>" alt="" class="wf-10">
-          </td>
-          <td><%=foto.activa ? "Si" : "No"%></td>
+          <tr>
+            <td><%=foto.id%></td>
+            <td><%=foto.titulo%></td>
+            <td>
+              <img src="/images/fotos/<%=foto.contenido%>" alt="" class="wf-10">
+            </td>
+            <td><%=foto.activa ? "Si" : "No"%></td>
             <td>
               <% if (foto.activa) { %>
                 <a href="/admin/desactivar-foto/<%=foto.id%>" class="btn btn-info">Desactivar Foto</a>
@@ -41,7 +35,7 @@
                 <a href="/admin/activar-foto/<%=foto.id%>" class="btn btn-primary">Activar Foto</a>
               <% } %>
             </td>
-        </tr>
+          </tr>
         <% }) %>
       </tbody>
     </table>

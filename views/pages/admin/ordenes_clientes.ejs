@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-10 mx-auto">
 
     <% flash.get('mensaje').forEach(function (msg) { %>
     <div class="alert alert-info text-center" role="alert">
@@ -7,17 +7,17 @@
     </div>
     <% }) %>
 
-    <h2>Ordenes Clientes</h2>
+    <h2>Admin - Ordenes Clientes</h2>
 
     <table class="table">
-      <thead>
+      <thead class="text-center">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Fecha</th>
           <th scope="col">Total Fotos</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-center">
         <% ordenes.forEach( orden => { %>
           <tr>
             <td scope="row"><a href="/admin/fotos-ordenes/<%=orden.id%>"><%=orden.id%></a></td>

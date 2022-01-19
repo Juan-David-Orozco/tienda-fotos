@@ -10,22 +10,22 @@
     <h2>Admin - Fotos Ordenes</h2>
 
     <table class="table">
-      <thead>
+      <thead class="text-center">
         <tr>
           <th>Id</th>
           <th>Titulo</th>
           <th>Foto</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-center">
         <% elementos.forEach( elemento => { %>
-        <tr>
-          <td><%=elemento.foto.id%></td>
-          <td><%=elemento.foto.titulo%></td>
-          <td>
-            <img src="../images/fotos/<%=elemento.foto.contenido%>" alt="" class="wf-10" >
-          </td>
-        </tr>
+          <tr>
+            <td><%=elemento.foto.id%></td>
+            <td><%=elemento.foto.titulo%></td>
+            <td>
+              <img src="/images/fotos/<%=elemento.foto.contenido%>" alt="" class="wf-10" >
+            </td>
+          </tr>
         <% }) %>
       </tbody>
     </table>

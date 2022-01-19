@@ -22,12 +22,12 @@
   <% fotos.forEach( foto => { %>
     <div class="col-md-3 my-2">
       <div class="card">
-        <h5 class="card-header bg-success text-white">
+        <h5 class="card-header bg-dark text-white">
           <%=foto.titulo%>
         </h5>
         <div class="card-body">
           <p class="card-text">
-            <img src="images/fotos/<%=foto.contenido%>" alt="" class="w-100">
+            <img src="/images/fotos/<%=foto.contenido%>" alt="" class="w-100">
           </p>
         </div>
         <% if (session && session.cliente) { %>
