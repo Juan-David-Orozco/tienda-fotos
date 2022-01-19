@@ -1,5 +1,5 @@
 /**
- * SesionController
+ * AdminController
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
@@ -10,6 +10,15 @@ const fs = require('fs');
 
 module.exports = {
 
+  principal: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let fotos = await Foto.find().sort("id")
+    respuesta.view('pages/admin/principal', {fotos})
+  },
+
   inicioSesion: async (peticion, respuesta) => {
     respuesta.view('pages/admin/inicio_sesion')
   },
@@ -19,10 +28,16 @@ module.exports = {
     const contrasena = peticion.body.contrasena
     let admin = await Admin.findOne({ email: email, contrasena: contrasena});
     if (admin) {
-      peticion.session.admin = admin
-      peticion.session.cliente = undefined
-      peticion.addFlash('mensaje', 'Sesión de admin iniciada')
-      return respuesta.redirect("/admin/principal");
+      if(admin.activo) {
+        peticion.session.admin = admin
+        peticion.session.cliente = undefined
+        peticion.addFlash('mensaje', 'Sesión de admin iniciada')
+        return respuesta.redirect("/admin/principal");
+      }
+      else {
+        peticion.addFlash('mensaje', 'Administrador desactivado')
+        return respuesta.redirect("/admin/inicio-sesion");
+      }
     }
     else {
       peticion.addFlash('mensaje', 'Email o contraseña invalidos')
@@ -30,79 +45,10 @@ module.exports = {
     }
   },
 
-  principal: async (peticion, respuesta) => {
-    if(!peticion.session || !peticion.session.admin){
-      peticion.addFlash('mensaje', 'Sesión inválida')
-      return respuesta.redirect("/admin/inicio-sesion")
-    }
-    let fotos = await Foto.find()
-    respuesta.view('pages/admin/principal', {fotos})
-  },
-
-  clientes: async (peticion, respuesta) => {
-    if(!peticion.session || !peticion.session.admin){
-      peticion.addFlash('mensaje', 'Sesión inválida')
-      return respuesta.redirect("/admin/inicio-sesion")
-    }
-    let clientes = await Cliente.find()
-    //sails.log.debug(clientes)
-    respuesta.view('pages/admin/clientes', {clientes})
-  },
-
-  ordenesClientes: async (peticion, respuesta) => {
-    if(!peticion.session || !peticion.session.admin){
-      return respuesta.redirect("/admin/inicio-sesion")
-    }
-    let ordenes = await Orden.find({cliente: peticion.params.clienteId })
-    //sails.log.debug(ordenes)
-    return respuesta.view('pages/admin/ordenes_clientes', { ordenes })
-    //if (!ordenCliente) {
-    //  return respuesta.redirect("/admin/clientes")
-    //}
-  },
-
-  fotosOrdenes: async (peticion, respuesta) => {
-    if(!peticion.session || !peticion.session.admin){
-      return respuesta.redirect("/admin/inicio-sesion")
-    }
-    let elementos = await OrdenDetalle.find({orden: peticion.params.ordenId}).populate('foto')
-    sails.log.debug(elementos)
-    return respuesta.view('pages/admin/fotos_ordenes', { elementos })
-  },
-
   cerrarSesion: async (peticion, respuesta) => {
     peticion.session.admin = undefined;
     peticion.addFlash('mensaje', 'Sesión admin finalizada')
     return respuesta.redirect("/");
-  },
-
-  agregarFoto: async (peticion, respuesta) => {
-    respuesta.view('pages/admin/agregar_foto')
-  },
-
-  procesarAgregarFoto: async (peticion, respuesta) => {
-    let foto = await Foto.create({
-      titulo: peticion.body.titulo,
-      activa: false
-    }).fetch()
-    peticion.file('foto').upload({}, async (error,archivos) => {
-
-      if (archivos && archivos[0]) {
-        let upload_path = archivos[0].fd
-        let extension = path.extname(upload_path)
-
-        await fs.createReadStream(upload_path).pipe(fs.createWriteStream(path.resolve(sails.config.appPath, `assets/images/fotos/${foto.id}${extension}`)))
-        await Foto.update(
-          {id: foto.id},
-          {contenido: `${foto.id}${extension}`, activa: true}
-        )
-        peticion.addFlash('mensaje', 'Foto agregada')
-        return respuesta.redirect("/admin/principal")
-      }
-      peticion.addFlash('mensaje', 'No hay foto seleccionada')
-      return respuesta.redirect("/admin/agregar-foto")
-
-    })
   },
 
   desactivarFoto: async (peticion, respuesta) => {
@@ -117,15 +63,79 @@ module.exports = {
     return respuesta.redirect("/admin/principal")
   },
 
+  agregarFoto: async (peticion, respuesta) => {
+    respuesta.view('pages/admin/agregar_foto')
+  },
+
+  procesarAgregarFoto: async (peticion, respuesta) => {
+    let foto = await Foto.create({
+      titulo: peticion.body.titulo,
+      activa: true
+    }).fetch()
+    peticion.file('foto').upload({}, async (error,archivos) => {
+      if (archivos && archivos[0]) {
+        let upload_path = archivos[0].fd
+        let extension = path.extname(upload_path)
+        await fs.createReadStream(upload_path).pipe(fs.createWriteStream(path.resolve(sails.config.appPath, `assets/images/fotos/${foto.id}${extension}`)))
+        await Foto.update(
+          {id: foto.id},
+          {contenido: `${foto.id}${extension}`}
+        )
+        peticion.addFlash('mensaje', 'Foto agregada')
+        return respuesta.redirect("/admin/principal")
+      }
+      peticion.addFlash('mensaje', 'No hay foto seleccionada')
+      return respuesta.redirect("/admin/agregar-foto")
+    })
+  },
+
+  clientes: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let clientes = await Cliente.find().sort("nombre")
+    //sails.log.debug(clientes)
+    respuesta.view('pages/admin/clientes', {clientes})
+  },
+
+  ordenesClientes: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let ordenes = await Orden.find({cliente: peticion.params.clienteId }).sort('id desc')
+    //sails.log.debug(ordenes)
+    respuesta.view('pages/admin/ordenes_clientes', { ordenes })
+  },
+
+  fotosOrdenes: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let elementos = await OrdenDetalle.find({orden: peticion.params.ordenId}).populate('foto')
+    //sails.log.debug(elementos)
+    respuesta.view('pages/admin/fotos_ordenes', { elementos })
+  },
+
   desactivarCliente: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
     await Cliente.update({id: peticion.params.clienteId}, {activo: false})
     peticion.addFlash('mensaje', 'Cliente desactivado')
     return respuesta.redirect("/admin/clientes")
   },
 
   activarCliente: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
     await Cliente.update({id: peticion.params.clienteId}, {activo: true})
-    peticion.addFlash('mensaje', 'Cliente Activado')
+    peticion.addFlash('mensaje', 'Cliente activado')
     return respuesta.redirect("/admin/clientes")
   },
 
@@ -134,75 +144,53 @@ module.exports = {
       peticion.addFlash('mensaje', 'Sesión inválida')
       return respuesta.redirect("/admin/inicio-sesion")
     }
-    let administradores = await Admin.find()
+    let administradores = await Admin.find().sort('id')
     respuesta.view('pages/admin/administradores', {administradores})
-
   },
 
   desactivarAdmin: async (peticion, respuesta) => {
-    if(peticion.session || peticion.session.admin){
-      const admin_id = peticion.session.admin.id
-      //sails.log.debug(admin_id)
-      //sails.log.debug(peticion.params.adminId)
-      if(admin_id == peticion.params.adminId){
-        peticion.addFlash('mensaje', 'Un administrador no se puede desactivar a si mismo')
-        return respuesta.redirect("/admin/administradores")
-      }
-      else{
-        await Admin.update({id: peticion.params.adminId}, {activo: false})
-        peticion.addFlash('mensaje', 'Administrador desactivado')
-        return respuesta.redirect("/admin/administradores")
-      }
-    }
-    else {
-      peticion.addFlash('mensaje', 'Sesión inválida')
-      return respuesta.redirect("/admin/inicio-sesion")
-    }
-  },
-
-
-  activarAdmin: async (peticion, respuesta) => {
-    if(peticion.session || peticion.session.admin){
-      const admin_id = peticion.session.admin.id
-      //sails.log.debug(admin_id)
-      //sails.log.debug(peticion.params.adminId)
-      await Admin.update({id: peticion.params.adminId}, {activo: true})
-      peticion.addFlash('mensaje', 'Administrador Activado')
-      return respuesta.redirect("/admin/administradores")
-    }
-    else {
-      peticion.addFlash('mensaje', 'Sesión inválida')
-      return respuesta.redirect("/admin/inicio-sesion")
-    }
-  },
-
-
-  dashboard: async (peticion, respuesta) => {
-    /*
-    let fotos = await Foto.find()
-    sails.log.debug(fotos)
-    let foto = await Foto.findOne({id:1})
-    sails.log.debug(foto)
-    */
     if(!peticion.session || !peticion.session.admin){
       peticion.addFlash('mensaje', 'Sesión inválida')
       return respuesta.redirect("/admin/inicio-sesion")
     }
-    else {
-      let totalClientes = await Cliente.count()
-      let totalAdministradores = await Admin.count()
-      let totalFotos = await Foto.count()
-      let totalOrdenes = await Orden.count()
-      let total = {
-        Clientes: totalClientes,
-        Administradores: totalAdministradores,
-        Fotos: totalFotos,
-        Ordenes: totalOrdenes
-      }
-      sails.log.debug(total)
-      respuesta.view('pages/admin/dashboard', {total})
+    const admin_id = peticion.session.admin.id
+    if(admin_id == peticion.params.adminId){
+      peticion.addFlash('mensaje', 'Un administrador no se puede desactivar a si mismo')
     }
+    else{
+      await Admin.update({id: peticion.params.adminId}, {activo: false})
+      peticion.addFlash('mensaje', 'Administrador desactivado')
+    }
+    return respuesta.redirect("/admin/administradores")
   },
 
+  activarAdmin: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    await Admin.update({id: peticion.params.adminId}, {activo: true})
+    peticion.addFlash('mensaje', 'Administrador activado')
+    return respuesta.redirect("/admin/administradores")
+  },
+
+  dashboard: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let totalClientes = await Cliente.count()
+    let totalAdministradores = await Admin.count()
+    let totalFotos = await Foto.count()
+    let totalOrdenes = await Orden.count()
+    let total = {
+      Clientes: totalClientes,
+      Administradores: totalAdministradores,
+      Fotos: totalFotos,
+      Ordenes: totalOrdenes
+    }
+    //sails.log.debug(total)
+    respuesta.view('pages/admin/dashboard', {total})
+  },
 
 };

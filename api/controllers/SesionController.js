@@ -5,16 +5,14 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-module.exports = {
+ module.exports = {
 
   registro: async (peticion, respuesta) => {
     respuesta.view('pages/registro')
   },
 
   procesarRegistro: async (peticion, respuesta) => {
-
     let cliente = await Cliente.findOne({ email: peticion.body.email });
-    sails.log.debug(cliente)
     if (cliente) {
       peticion.addFlash('mensaje', 'Email duplicado')
       return respuesta.redirect("/registro");
@@ -25,12 +23,10 @@ module.exports = {
         nombre: peticion.body.nombre,
         contrasena: peticion.body.contrasena
       })
-      peticion.session.cliente = cliente;
-      sails.log.debug(peticion.session.cliente)
+      //peticion.session.cliente = cliente;
       peticion.addFlash('mensaje', 'Cliente registrado')
       return respuesta.redirect("/");
     }
-
   },
 
   inicioSesion: async (peticion, respuesta) => {
@@ -41,13 +37,13 @@ module.exports = {
     const email = peticion.body.email
     const contrasena = peticion.body.contrasena
     let cliente = await Cliente.findOne({ email: email, contrasena: contrasena});
-    sails.log.debug(cliente)
     if (cliente) {
       if(cliente.activo) {
         peticion.session.cliente = cliente; // Se guarda el cliente en el objeto session (express)
-        sails.log.debug(cliente)
+        //sails.log.debug(cliente)
         let carroCompra = await CarroCompra.find({cliente: cliente.id})
         peticion.session.carroCompra = carroCompra
+        //sails.log.debug(carroCompra)
         peticion.addFlash('mensaje', 'Sesión iniciada')
         return respuesta.redirect("/");
       }

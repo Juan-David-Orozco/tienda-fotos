@@ -13,7 +13,7 @@
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 
-    fecha: { type: 'string' },
+    fecha: { type: 'ref', columnType: 'date' },
 
     total: { type: 'number' },
 

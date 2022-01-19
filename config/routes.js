@@ -8,7 +8,7 @@
  * https://sailsjs.com/anatomy/config/routes-js
  */
 
-module.exports.routes = {
+ module.exports.routes = {
 
 
   //  ╦ ╦╔═╗╔╗ ╔═╗╔═╗╔═╗╔═╗╔═╗
@@ -24,12 +24,14 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  // -- Contenido estatico -- //
+  '/acerca-de': {view: 'pages/acerca_de'},
+
+  // -----       Controlador Principal       ---- //
   'GET /': 'PrincipalController.inicio',
+  'GET /top-vendidas': 'PrincipalController.topVendidas',
 
-  '/acerca-de': {
-    view: 'pages/acerca_de'
-  },
-
+  // -----       Controlador Sesion Cliente       ---- //
   'GET /registro': 'SesionController.registro',
   'POST /procesar-registro': 'SesionController.procesarRegistro',
 
@@ -37,44 +39,44 @@ module.exports.routes = {
   'GET /cerrar-sesion': 'SesionController.cerrarSesion',
   'POST /procesar-inicio-sesion': 'SesionController.procesarInicioSesion',
 
+  // -----       Controlador Compra       ---- //
   'GET /agregar-carro-compra/:fotoId': 'CompraController.agregarCarroCompra',
   'GET /carro-de-compra': 'CompraController.carroCompra',
   'GET /eliminar-carro-compra/:fotoId': 'CompraController.eliminarCarroCompra',
-
   'GET /comprar': 'CompraController.comprar',
+  
   'GET /mis-ordenes': 'CompraController.misOrdenes',
   'GET /mis-ordenes/:ordenId': 'CompraController.ordenDeCompra',
-
-  'GET /top-vendidas': 'PrincipalController.topVendidas',
 
   'GET /agregar-lista-deseo/:fotoId': 'CompraController.agregarListaDeseo',
   'GET /lista-deseo': 'CompraController.listaDeseo',
   'GET /eliminar-lista-deseo/:fotoId': 'CompraController.eliminarListaDeseo',
 
+  /* ======     Controlador Administrador    ===== */
+  // Principal
+  'GET /admin/principal': 'AdminController.principal',
+  // Sesion
   'GET /admin/inicio-sesion': 'AdminController.inicioSesion',
   'POST /admin/procesar-inicio-sesion': 'AdminController.procesarInicioSesion',
-  'GET /admin/principal': 'AdminController.principal',
   'GET /admin/cerrar-sesion': 'AdminController.cerrarSesion',
-  'GET /admin/agregar-foto': 'AdminController.agregarFoto',
-  'POST /admin/procesar-agregar-foto': 'AdminController.procesarAgregarFoto',
-
+  // Activacion-Desactivacion Fotos
   'GET /admin/desactivar-foto/:fotoId': 'AdminController.desactivarFoto',
   'GET /admin/activar-foto/:fotoId': 'AdminController.activarFoto',
-
+  // Agregar Foto
+  'GET /admin/agregar-foto': 'AdminController.agregarFoto',
+  'POST /admin/procesar-agregar-foto': 'AdminController.procesarAgregarFoto',
+  // Clientes
   'GET /admin/clientes': 'AdminController.clientes',
   'GET /admin/clientes/:clienteId': 'AdminController.ordenesClientes',
   'GET /admin/fotos-ordenes/:ordenId': 'AdminController.fotosOrdenes',
   'GET /admin/desactivar-cliente/:clienteId': 'AdminController.desactivarCliente',
   'GET /admin/activar-cliente/:clienteId': 'AdminController.activarCliente',
-
+  // Administradores
   'GET /admin/administradores': 'AdminController.administradores',
   'GET /admin/desactivar-admin/:adminId': 'AdminController.desactivarAdmin',
   'GET /admin/activar-admin/:adminId': 'AdminController.activarAdmin',
-
-
+  // Dashboard
   'GET /admin/dashboard': 'AdminController.dashboard',
-
-  
 
   /***************************************************************************
   *                                                                          *
