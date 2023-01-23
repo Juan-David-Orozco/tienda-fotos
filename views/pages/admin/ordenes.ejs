@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-md-12">
+
+    <% flash.get('mensaje').forEach(function (msg) { %>
+      <div class="alert alert-info text-center" role="alert">
+        <%=msg%>
+      </div>
+    <% }) %>
+
+    <h2>Ordenes</h2>
+
+    <div class="row">
+      <% ordenes.forEach( orden => { %>
+      <div class="col-md-12 my-2">
+        <div class="card">
+          <h5 class="card-header bg-info text-white d-flex">
+            ClienteID: <%=orden.cliente_id%>
+            <b class="mx-auto"> Nombre: <%=orden.cliente%></b>
+          </h5>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Total Fotos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% orden.compras.forEach( compra => { %>
+                  <tr>
+                    <td scope="row"><%=compra.id%></a></td>
+                    <td scope="row"><%=compra.fecha%></td>
+                    <td scope="row"><%=compra.total%></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+
+  </div>
+</div>

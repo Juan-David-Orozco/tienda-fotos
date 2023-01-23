@@ -193,4 +193,36 @@ module.exports = {
     respuesta.view('pages/admin/dashboard', {total})
   },
 
+  ordenes: async (peticion, respuesta) => {
+    if(!peticion.session || !peticion.session.admin){
+      peticion.addFlash('mensaje', 'Sesión inválida')
+      return respuesta.redirect("/admin/inicio-sesion")
+    }
+    let ord = await Orden.find().sort('fecha').populate('cliente')
+    let ordOrd = []
+    ordOrd = ord.sort((a,b) => {
+      if(a.cliente.id > b.cliente.id) return 1;
+      if(a.cliente.id < b.cliente.id) return -1;
+      return 0;
+    })
+    let ordenes = []
+    ultimoClienteId = undefined
+    ordOrd.forEach((orden) => {
+      if(orden.cliente.id != ultimoClienteId) {
+        ultimoClienteId = orden.cliente.id
+        ordenes.push({
+          cliente_id: orden.cliente.id,
+          cliente: orden.cliente.nombre,
+          compras: [],
+        })
+      }
+      ordenes[ordenes.length-1].compras.push({
+        id: orden.id,
+        fecha: orden.fecha,
+        total: orden.total
+      })
+    })
+    respuesta.view('pages/admin/ordenes', {ordenes})
+  },
+
 };

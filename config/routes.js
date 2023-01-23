@@ -77,7 +77,7 @@
   'GET /admin/activar-admin/:adminId': 'AdminController.activarAdmin',
   // Dashboard
   'GET /admin/dashboard': 'AdminController.dashboard',
-
+  'GET /admin/ordenes': 'AdminController.ordenes',
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
